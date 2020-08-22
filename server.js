@@ -1,8 +1,9 @@
-
-
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 const mysql = require('mysql2');
+
+
+const PORT = process.env.PORT || 3001;
 
 //const db = require('./db/database');
 
@@ -19,6 +20,45 @@ const connection = mysql.createConnection({
   
   connection.connect(err => {
     if (err) throw err;
-    console.log('connected as id ' + connection.threadId);
 //     afterConnection();
   });
+
+  // view all departments
+
+  async function viewAllDepartment() {
+      const sql = `SELECT * FROM department`;
+      const parms = [];
+      connection.promise().query(sql, parmas, (err, rows) => {
+          if (err) {
+              return { error: err.message }; 
+          }
+          return rows;
+      })
+  };
+
+  async function viewAllRole() {
+    const sql = `SELECT * FROM role`;
+    const parms = [];
+    connection.promise().query(sql, parmas, (err, rows) => {
+        if (err) {
+            return { error: err.message };
+        }
+        return rows;
+      }); 
+};
+
+async function viewAllEmployees() {
+    const sql = `SELECT * FROM employee INNER JOIN  employee_db.role ON employee.role_id = role.id`;
+    const parms = [];
+    connection.promise().query(sql, parmas, (err, rows) => {
+        if (err) {
+            return{ error: err.message };
+        }
+        return rows;
+      });    
+};
+
+
+
+
+  
