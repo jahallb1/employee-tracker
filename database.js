@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 const mysql = require('mysql2');
-const { async } = require('rxjs');
+
 
 
 const PORT = process.env.PORT || 3001;
@@ -25,12 +25,32 @@ module.exports = {
       const sql = `SELECT * FROM department`;
       try {
       const [rows] = await promisePool.query(sql);
-    
+        console.table(sql);
       return rows
       } catch (err) {
         throw err
       }
+      onePrompt();
   },
+  viewAllRole: async function() {
+    const sql = `SELECT * FROM role`;
+    try {
+      const [rows] = await promisePool.query(sql);
+
+      return rows
+    } catch (err) {
+      throw err
+    }
+},
+viewAllEmployees: async function() {
+  const sql = `SELECT * FROM employee INNER JOIN  employee_db.role ON employee.role_id = role.id`;
+  try {
+    const [rows] = await promisePool.query(sql);
+    return rows;
+  } catch (err) {
+    throw err;
+  }
+},
   selectOneEmployeeById: async function(id) {
     const sql = `SELECT * FROM employee where id = ?`;
     const params = [id]
@@ -55,26 +75,8 @@ insertEmployee: async function(first_name, last_name, role_id, manager_id) {
 }
 }
 
-  async function viewAllRole() {
-    const sql = `SELECT * FROM role`;
-    const params = [];
-    connection.promise().query(sql, parmas, (err, rows) => {
-        if (err) {
-            return { error: err.message };
-        }
-        return rows;
-      }); 
-};
+  
 
-async function viewAllEmployees() {
-    const sql = `SELECT * FROM employee INNER JOIN  employee_db.role ON employee.role_id = role.id`;
-    const parms = [];
-    connection.promise().query(sql, parmas, (err, rows) => {
-        if (err) {
-            return{ error: err.message };
-        }
-        return rows;
-      });    
-};
+
 
 
