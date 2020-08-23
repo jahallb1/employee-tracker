@@ -1,8 +1,10 @@
 const inquirer = require("inquirer");
 const sqlStatements = require('./database');
 const { viewAllDepartments, viewAllRole, viewAllEmployees } = require("./database");
+const { async } = require("rxjs");
 
-    inquirer
+
+    async function mainMenu() { inquirer
     .prompt ({
     type: 'list',
     name: 'question',
@@ -15,25 +17,28 @@ const { viewAllDepartments, viewAllRole, viewAllEmployees } = require("./databas
     'Add an employee', 
     'Update an employee', 
     'Stop Challenge']
-    }).then((answers) => {
-if (answers === "View all departments") {
-    viewAllDepartments();
-} if (answers === "View all roles") {
-    viewAllRole();
-} if (answers === "View all employees") {
-    viewAllEmployees();
-} if (answers === "Add a department") {
-    addDepartment();
-} if (answers === "Add a role") {
-    addRole()
-} if (answers === "Add an employee") {
-    addEmployee();
-} if (answers === "Update an employee") {
-    updatedEmployee();
+    }).then(async({question}) => {
+if (question === "View all departments") {
+    await viewAllDepartments();
+} else if (question === "View all roles") {
+    await viewAllRole();
+} else if (question === "View all employees") {
+    await viewAllEmployees();
+} else if (question === "Add a department") {
+    await addDepartment();
+} else if (question === "Add a role") {
+    await addRole()
+} else if (question === "Add an employee") {
+    await addEmployee();
+} else if (question === "Update an employee") {
+    await updatedEmployee();
 } else {
     console.log("Goodbye")
 }
-})
+mainMenu();
+});
 
 
+    }
+    mainMenu();
  

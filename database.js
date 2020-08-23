@@ -25,12 +25,10 @@ module.exports = {
       const sql = `SELECT * FROM department`;
       try {
       const [rows] = await promisePool.query(sql);
-        console.table(sql);
-      return rows
+        console.table(rows);
       } catch (err) {
         throw err
       }
-      onePrompt();
   },
   viewAllRole: async function() {
     const sql = `SELECT * FROM role`;
